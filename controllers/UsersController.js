@@ -15,7 +15,7 @@ class UsersController {
     try {
       // Access the database and users collection
       const usersCollection = dbClient.client.db(dbClient.dbName).collection('users');
-      
+
       // Check if email already exists
       const existingUser = await usersCollection.findOne({ email });
       if (existingUser) {
