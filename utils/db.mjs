@@ -1,4 +1,6 @@
-import { MongoClient } from 'mongodb';
+import mongodb from 'mongodb';
+
+const { MongoClient } = mongodb;
 
 class DBClient {
   constructor() {
@@ -7,22 +9,17 @@ class DBClient {
     const database = process.env.DB_DATABASE || 'files_manager';
 
     const url = `mongodb://${host}:${port}`;
-    // useUnifiedTopology prevents a deprecation warning in the console
     this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.dbName = database;
 
-    // Connect to the server
     this.client.connect().catch((err) => {
       console.error('MongoDB Connection Error:', err);
     });
   }
 
   isAlive() {
-    // Safely check if the connection to MongoDB is active
-    if (this.client && this.client.topology) {
-      return this.client.topology.isConnected();
-    }
-    return false;
+    // isConnected() is the standard method for MongoDB v3
+    return this.client.isConnected();
   }
 
   async nbUsers() {
